@@ -20,6 +20,7 @@ public class TesteDelecao {
 		//Response in this context is the total lines modified by the query
 		int updateCount = statement.getUpdateCount();
 		
+		
 		System.out.println("Total lines modified by delete command: " + updateCount);
 		
 	}

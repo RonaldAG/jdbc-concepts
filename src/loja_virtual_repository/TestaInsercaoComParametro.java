@@ -11,26 +11,50 @@ public class TestaInsercaoComParametro {
 		//Get a connection with the Mysql driver
 		Connection connection = ConnectionFactory.criaConexao();
 		
+		//Take control of the transactions. Make the insert into database manually.
+		connection.setAutoCommit(false);
+		
 		//Create a statement that it will be use to create CRUD methods 
 		//Create a PREPARE STATEMENT. A prepare statement is much more secure than a CREATE STATEMENT. So, do preference to use this.
-		PreparedStatement statement = connection.prepareStatement("INSERT INTO PRODUTO (nome, descricao) VALUES(?, ?)", Statement.RETURN_GENERATED_KEYS);
+		PreparedStatement statement = 
+				connection.prepareStatement("INSERT INTO PRODUTO (nome, descricao) VALUES(?, ?)", Statement.RETURN_GENERATED_KEYS);
 		
-		//Inject values
-		statement.setString(1, "Computador");
-		statement.setString(2, "Dell vostros");
+		try {
+			addItens("SmartTv", "45 Polegadas", statement);
+			addItens("Celular", "Iphone", statement);
+			
+			//Add items will just do correctly if both products does not throw exceptions.
+			connection.commit();
+				
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("ROLLBACK EXECUTED");
+			//Undo all changes made in the current transaction
+			connection.rollback();
+		}
+		finally{
+			statement.close();
+			connection.close();			
+		}
+	}
+	
+	private static void addItens(String name, String description, PreparedStatement statement) throws SQLException {
+		//Set values
+		statement.setString(1, name);
+		statement.setString(2, description);
 		
-		//Execute the query
+		//Execute query
 		statement.execute();
 		
-		
-		// Get the result (id)
-		ResultSet generatedKeys = statement.getGeneratedKeys();
-		
-		// Print ID
-		while(generatedKeys.next()) {
-			System.out.println(generatedKeys.getInt(1));
-			
+		//Get result
+		ResultSet resultSet = statement.getGeneratedKeys();
+
+		//Print the result
+		while(resultSet.next()) {
+			Integer id = resultSet.getInt(1);
+			System.out.println(id);
 		}
-	
+		resultSet.close();
+		
 	}
 }
