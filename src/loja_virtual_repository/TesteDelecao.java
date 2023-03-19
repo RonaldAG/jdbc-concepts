@@ -1,8 +1,8 @@
 package loja_virtual_repository;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class TesteDelecao {
 
@@ -10,11 +10,11 @@ public class TesteDelecao {
 		//Get the connection with mysql driver
 		Connection connection = ConnectionFactory.criaConexao();
 		
-		//Create a statement
-		Statement statement = connection.createStatement();
+		//Create a prepare statement
+		PreparedStatement statement = connection.prepareStatement("DELETE FROM produto WHERE id>2");
 		
-		//Execute a sql command
-		statement.execute("DELETE FROM produto WHERE id>2");
+		//Execute the query
+		statement.execute();
 		
 		//Get the response
 		//Response in this context is the total lines modified by the query

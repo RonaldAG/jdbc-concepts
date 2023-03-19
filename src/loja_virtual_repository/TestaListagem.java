@@ -1,19 +1,19 @@
 package loja_virtual_repository;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class TestaListagem {
 	public static void main(String[] args) throws SQLException {
 		Connection connection = ConnectionFactory.criaConexao();
 		
-		Statement statement = connection.createStatement();
-		
-		
 		// Executa uma select na tabela produto
-		statement.execute("SELECT * FROM PRODUTO");
+		PreparedStatement statement = connection.prepareStatement("SELECT * FROM PRODUTO");
+		
+		//Execute query
+		statement.execute();
 		
 		//Pega o resultado da query acima
 		ResultSet resultSet = statement.getResultSet();
