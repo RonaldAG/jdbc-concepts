@@ -8,7 +8,8 @@ public class TesteDelecao {
 
 	public static void main(String[] args) throws SQLException {
 		//Get the connection with mysql driver
-		Connection connection = ConnectionFactory.criaConexao();
+		ConnectionFactory connectionFac = new ConnectionFactory();
+		Connection connection = connectionFac.criaConexao();
 		
 		//Create a prepare statement
 		PreparedStatement statement = connection.prepareStatement("DELETE FROM produto WHERE id>2");

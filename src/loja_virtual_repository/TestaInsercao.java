@@ -9,7 +9,8 @@ public class TestaInsercao {
 	
 	public static void main(String[] args) throws SQLException {
 		//Get a connection with the Mysql driver
-		Connection connection = ConnectionFactory.criaConexao();
+		ConnectionFactory connectionFac = new ConnectionFactory();
+		Connection connection = connectionFac.criaConexao();
 		
 		//Create a statement that it will be use to create CRUD methods 
 		Statement statement = connection.createStatement();

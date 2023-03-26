@@ -9,17 +9,17 @@ import java.sql.Statement;
 public class TestaInsercaoComParametro {
 	public static void main(String[] args) throws SQLException {
 		//Get a connection with the Mysql driver
-		Connection connection = ConnectionFactory.criaConexao();
+		ConnectionFactory connectionFac = new ConnectionFactory();
+		Connection connection = connectionFac.criaConexao();
 		
 		//Take control of the transactions. Make the insert into database manually.
 		connection.setAutoCommit(false);
 		
 		//Create a statement that it will be use to create CRUD methods 
 		//Create a PREPARE STATEMENT. A prepare statement is much more secure than a CREATE STATEMENT. So, do preference to use this.
-		PreparedStatement statement = 
+		try (PreparedStatement statement = 
 				connection.prepareStatement("INSERT INTO PRODUTO (nome, descricao) VALUES(?, ?)", Statement.RETURN_GENERATED_KEYS);
-		
-		try {
+				) {
 			addItens("SmartTv", "45 Polegadas", statement);
 			addItens("Celular", "Iphone", statement);
 			
@@ -32,10 +32,7 @@ public class TestaInsercaoComParametro {
 			//Undo all changes made in the current transaction
 			connection.rollback();
 		}
-		finally{
-			statement.close();
 			connection.close();			
-		}
 	}
 	
 	private static void addItens(String name, String description, PreparedStatement statement) throws SQLException {
