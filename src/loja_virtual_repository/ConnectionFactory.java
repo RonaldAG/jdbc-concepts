@@ -18,6 +18,8 @@ public class ConnectionFactory {
 			comboPooledDataSource.setUser("root");
 			comboPooledDataSource.setPassword("Mysql2710@");
 			
+			comboPooledDataSource.setMaxPoolSize(15);
+			
 			this.dataSource = comboPooledDataSource;
 		}
 	
